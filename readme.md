@@ -20,7 +20,7 @@ Install Ubuntu Server  and install the latest Docker:
 16.	sudo apt-get install lxc-docker -y
 
 Pull the latest build from Github:
-17.	git clone https://github.com/brianehlert/meshblu_docker.git
+17. git clone https://github.com/brianehlert/meshblu_docker.git
 (Git should be installed, error if it is not – then run 'sudo apt-get install git')
 
 Build the container
