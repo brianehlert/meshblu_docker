@@ -24,7 +24,7 @@ Pull the latest build from Github:
 
 Build the container
 12.	cd meshblu_docker
-13.	sudo docker build -t meshblu .
+13.	sudo docker build -t meshblu .     Note: that period at the end of the line is very important.
 
 Run the container interactively (you have a console and have to open another terminal to manage Docker, good for debug)
 14.	sudo docker run -i -t -p 3000:3000 -p 5683:5683 meshblu  (this maps the container port to the matching host port - note one command per port)
