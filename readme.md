@@ -20,34 +20,20 @@ Install Ubuntu Server  and install the latest Docker:
 	sudo apt-get install lxc-docker -y
 
 Pull the latest build from Github:
-<<<<<<< HEAD
 11.	git clone https://github.com/brianehlert/meshblu_docker.git  (Git should be installed, error if it is not – then run 'sudo apt-get install git')
-=======
-17. git clone https://github.com/brianehlert/meshblu_docker.git
-(Git should be installed, error if it is not â€“ then run 'sudo apt-get install git')
->>>>>>> origin/master
 
 Build the container
-12.	cd meshblu
+12.	cd meshblu_docker
 13.	sudo docker build -t meshblu .
 
 Run the container interactively (you have a console and have to open another terminal to manage Docker, good for debug)
-<<<<<<< HEAD
 14.	sudo docker run -i -t -p 3000:3000 -p 5683:5683 meshblu  (this maps the container port to the matching host port - note one command per port)
-=======
-20.	sudo docker run -i -t -p 3000:3000 -p 5683:5683 meshblu
-(this maps the container port to the matching host port - note one command per port)
->>>>>>> origin/master
 
 Test that Meshblu is running
 15.	sudo docker ps  (list running Docker containers)
 16.	curl http://localhost:3000/status    (should output:    {"meshblu":"online"}  )
 
-<<<<<<< HEAD
 An alternate to steps 11 – 13 is to build directly from Github
-=======
-An alternate to steps 17 â€“ 19 is to build directly from Github
->>>>>>> origin/master
 1.	sudo docker build github.com/brianehlert/meshblu_docker.git 
 2.	sudo docker images   ( find the image ID )
 3.	sudo docker run -t -p 3000:3000 -p 5683:5683 <image id>

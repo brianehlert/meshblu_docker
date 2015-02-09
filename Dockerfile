@@ -28,7 +28,7 @@ COPY . /var/www
 RUN cd /var/www && npm install
 
 # configure
-COPY ./docker/config.js /var/www/config.js
+COPY ./config.js /var/www/config.js
 
 # open ports
 EXPOSE 3000 5683 1883
