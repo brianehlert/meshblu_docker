@@ -1,0 +1,37 @@
+# this builds a single container to run Meshblu locally, with Redis and MongoDB.  Any data persistence is written to the container itself.
+# sudo docker images   ( find the image ID )
+# sudo docker run -t -p 3000:3000 -p 5683:5683 -p 1883:1883 <image id>    # direct maps localhost ports to container listener ports
+# Check Status:  curl http://localhost:3000/status
+
+# latest node image
+FROM node:latest
+
+MAINTAINER BrianEh
+
+# install dependencies
+# RUN apt-get update && apt-get install -y \
+#	build-essential \
+#	redis-server \
+#	apt-utils \
+#	supervisor \
+#	nodejs \
+#	nodejs-legacy \
+#	npm \
+#	libavahi-compat-libdnssd-dev
+
+# logging directory
+RUN mkdir /opt/blu/log
+
+# copy the local meshblu pull to /opt/blu
+COPY . /opt/blu
+
+# install Meshblu
+RUN cd /opt/blu && npm install
+COPY ./docker/config.js.docker /var/www/config.js
+COPY ./docker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+
+# open ports
+EXPOSE 3000 5683 1883
+
+# configure Meshblu to run on start of container
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"] 
