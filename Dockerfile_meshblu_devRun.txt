@@ -35,3 +35,5 @@ EXPOSE 3000 5683 1883
 
 # configure Meshblu to run on start of container
 # CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"] 
+
+# sudo docker run -i -t -v "/home/brian/Github":"/opt/blu":ro --name app_test node /bin/bash

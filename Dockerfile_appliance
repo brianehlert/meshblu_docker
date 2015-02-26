@@ -12,35 +12,55 @@ MAINTAINER BrianEh
 # install dependencies
 RUN apt-get update && apt-get install -y \
 	build-essential \
-	redis-server \
-	apt-utils \
 	supervisor \
-	nodejs \
-	nodejs-legacy \
-	npm \
+	libzmq-dev \
+	curl \
 	libavahi-compat-libdnssd-dev
 
 # install Mongo
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
-RUN apt-get update && apt-get install -y mongodb-10gen
+RUN echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
 
-# redis to run a daemon
-RUN sed -i 's/daemonize yes/daemonize no/g' /etc/redis/redis.conf
+# Node from NodeSource  (this runs 'apt-get update')
+RUN curl -sL https://deb.nodesource.com/setup | sudo bash -
 
-# logging directory
-RUN mkdir /var/log/skynet
+# install node -  from NodeSource automatically installs legacy pointers (Ubuntu package does not)
+RUN apt-get install -y nodejs
 
-# copy the meshblu pull to /var/www
-COPY . /var/www
+# make sure that NPM is at the latest
+RUN npm -g update npm
+
+# install MongoDB - automatically sets is as a service
+RUN apt-get install -y mongodb-org
+
+# install Redis server - automatically sets it as a service
+RUN apt-get install -y redis-server
+
+# global install of bcrypt
+RUN npm install --unsafe-perm -g bcrypt
+
+# install forever to run the servers as services
+RUN npm install -g forever
+
+# directories
+RUN mkdir /opt/blu
+RUN mkdir /opt/blu/meshblu
+RUN mkdir /opt/blu/gateblu-forever
+RUN mkdir /opt/blu/log
+
+# copy the meshblu pull to /opt/blu (this should not copy everything)
+COPY ./meshblu /opt/blu/meshblu/
+# remove test
+# remove docker
+COPY ./gateblu-forever /opt/blu/gateblu-forever/
+# remove test
 
 # install Meshblu
-RUN cd /var/www && npm install
-COPY ./docker/config.js.docker /var/www/config.js
-COPY ./docker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+# RUN cd /opt/blu/meshblu && npm install --production --loglevel warn
+# RUN cd /opt/blu/gateblu-forever && npm install --production --loglevel warn
+COPY ./meshbluConfig.js /opt/blu/meshblu/config.js
+COPY ./ubuntu_meshblu.conf /etc/init/meshblu.conf
 
 # open ports
-EXPOSE 3000 5683 1883
+EXPOSE 3000 5683 1883 27017 6379 22
 
-# configure Meshblu to run on start of container
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"] 

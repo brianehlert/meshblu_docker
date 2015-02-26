@@ -1,0 +1,15 @@
+# test folders
+test/*
+
+# docker
+docker/*
+Dockerfile
+
+# Project files
+*.sublime*
+.github
+
+# GitHub Readme
+README*
+
+
