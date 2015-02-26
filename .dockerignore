@@ -1,6 +1,12 @@
-test/*
+# Test folders
+*/test
+*/*/test
 
+# Version control files
 .gitignore
+.gitattributes
+*sublime*
 
-docker/*
+# Docker configure files
+*/docker
 Dockerfile
