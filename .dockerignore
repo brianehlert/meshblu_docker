@@ -1,15 +1,6 @@
-# test folders
 test/*
 
-# docker
+.gitignore
+
 docker/*
 Dockerfile
-
-# Project files
-*.sublime*
-.github
-
-# GitHub Readme
-README*
-
-
